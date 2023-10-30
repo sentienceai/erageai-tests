@@ -1,0 +1,27 @@
+{
+  "name": "matura-log",
+  "version": "1.0.0",
+  "description": "blog to document changes to my matura project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vuepress dev",
+    "build": "vuepress build && rm -rf dist && mv .vuepress/dist dist && rm -rf .vuepress/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/mark-matura/log.git"
+  },
+  "author": "Mark Marolf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/mark-matura/log/issues"
+  },
+  "homepage": "https://gitlab.com/mark-matura/log#readme",
+  "dependencies": {
+    "vuepress": "^1.5.4"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-medium-zoom": "^1.5.4",
+    "vuepress-plugin-mathjax": "^1.2.8"
+  }
+}
