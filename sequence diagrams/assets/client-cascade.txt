@@ -1,0 +1,58 @@
+title Proposed collection and processing
+
+// store servers on startup
+participant BLECoordinator
+participant [
+participant BLE Scanner
+participant ServerWebservice
+participant MeasurementWebservice
+participant HttpManager
+participant ]
+
+
+BLECoordinator->*BLE Scanner:onStartup()
+
+note over BLE Scanner: Initialize BLE Scanner
+note over BLE Scanner: Start Scanner,\nrun for 2 seconds
+BLE Scanner-->BLECoordinator: return discovered devices
+destroy BLE Scanner
+
+// Store Servers on startup
+BLECoordinator->*ServerWebservice: Call store request, passing queue
+note over ServerWebservice:Convert queue to JSON request Body
+
+ServerWebservice->HttpManager: Call post request
+
+HttpManager ->]: POST /measurement/store HTTP/1.1
+HttpManager <--]: Server Response
+HttpManager-->ServerWebservice:return response
+destroy HttpManager
+
+ServerWebservice-->BLECoordinator: Initiate RSSI Collection in loop above
+destroy ServerWebservice
+
+
+
+BLECoordinator->BLECoordinator: Fill out server struct to persist server\naddress
+
+loop Collect RSSI for 500ms
+[<-BLECoordinator: Connect to devices, get data
+[-->BLECoordinator: Get RSSI of response
+note right of BLECoordinator:Store Measurement in Queue
+end
+
+note over BLECoordinator: Stop Scanner to free up memory\nand stop BTC task
+
+BLECoordinator->*MeasurementWebservice: Call store request, passing queue
+destroy BLECoordinator
+note over MeasurementWebservice:Convert queue to JSON request Body
+
+MeasurementWebservice->HttpManager: Call post request
+
+HttpManager ->]: POST /measurement/store HTTP/1.1
+HttpManager <--]: Server Response
+HttpManager-->MeasurementWebservice:return response
+destroy HttpManager
+
+MeasurementWebservice-->BLECoordinator: Initiate RSSI Collection in loop above
+destroy MeasurementWebservice

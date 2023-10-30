@@ -1,0 +1,18 @@
+title Trilateration
+
+note over REST API: publish client and server info
+trilaterator-->REST API: every 5 seconds: get clients and servers,\non publish of new device refresh list
+trilaterator-->REST API: Get environment coefficients for default env
+
+note over trilaterator: save information globally
+
+group Every 500ms:
+
+note over trilaterator:Get measurements foreach \nserver\n\nSort all by timestamp\n\nGet lowest RSSI measurement, \nfind most recent counterparts\n\nSort by RSSI\n\nreturn three measurements with \nlowest RSSI
+
+note over trilaterator:convert RSSI to distances\n\n-> call distance triple handler\n
+end
+
+note over trilaterator:Run scipy.optimize to determine\noptimal X, Y coordinates
+
+trilaterator->REST API: Save position in MySQL
